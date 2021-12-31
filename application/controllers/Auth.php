@@ -19,21 +19,22 @@ class Auth extends CI_Controller {
   public function process()
   {
     $post =$this->input->post(null, TRUE);
-      if (isset($post['login'])){
-        $this->load->model('user_m');
-        $query =$this->user_m->login($post);
-        if($query->num_rows() > 0){
-          $row = $query->row();
-          $params = array(
-            'userid' => $row->user_id
-          );
-          $this->session->set_userdata($params);
-          echo "<script>window.location='".site_url('dashboard')."'</script>";
-        } else {
-          $this->session->set_flashdata('message', 'Login gagal, username atau password salah');
-          redirect(site_url('auth'));
-        }
-     }
+    if (isset($post['login'])){
+      $this->load->model('user_m');
+      $query =$this->user_m->login($post);
+      if($query->num_rows() > 0){
+        $row = $query->row();
+        $params = array(
+          'userid' => $row->user_id,
+          'status' => 'loggedin'
+        );
+        $this->session->set_userdata($params);
+        echo "<script>window.location='".site_url('dashboard')."'</script>";
+      } else {
+        $this->session->set_flashdata('message', 'Login gagal, username atau password salah');
+        redirect(site_url('auth'));
+      }
+    }
   }
 
   public function logout()

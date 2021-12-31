@@ -55,8 +55,16 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['home'] = 'menu';
 $route['profil'] = 'menu/profil';
-$route['artikel'] = 'menu/artikel';
-$route['artikel/(:num)/(:any)'] = 'menu/artikel/$1';
+
+$route['artikel'] = 'menu/post/0';
+$route['artikel/(:num)/(:any)'] = 'menu/post/0/$1';
+
+$route['pengumuman'] = 'menu/post/1';
+$route['pengumuman/(:num)/(:any)'] = 'menu/post/1/$1';
+
+$route['berita'] = 'menu/post/2';
+$route['berita/(:num)/(:any)'] = 'menu/post/2/$1';
+
 $route['galeri'] = 'menu/galeri';
 $route['informasi'] = 'menu/informasi';
 $route['kontak'] = 'menu/kontak';

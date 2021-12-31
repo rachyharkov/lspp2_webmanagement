@@ -34,8 +34,8 @@ class Menu extends CI_Controller {
 	// 		$this->informasi();
 	// 	}
 
-	// 	if ($what_page == 'artikel') {
-	// 		$this->artikel();
+	// 	if ($what_page == 'post') {
+	// 		$this->post();
 	// 	}
 
 	// 	if ($what_page == 'galeri') {
@@ -142,40 +142,54 @@ class Menu extends CI_Controller {
 	}
 	
 
-	public function artikel($id_artikel = NULL, $judul_artikel = NULL)
+	public function post($tipepost = NULL, $id_post = NULL, $judul_post = NULL)
 	{
+		$laman = '';
 
-		if (!$id_artikel) {
+		if ($tipepost == 0) { //artikel
+			$laman = 'Artikel';
+		}
+
+		if ($tipepost == 1) { //pengumuman
+			$laman = 'Pengumuman';
+		}
+
+		if ($tipepost == 2) { //berita
+			$laman = 'Berita';
+		}
+
+		if (!$id_post) {
+
 			$data = array(
-				'title_page' => 'Artikel - LSP P2 Pupuk Indonesia',
+				'title_page' => $laman.' - LSP P2 Pupuk Indonesia',
 				'classnyak' => $this,
-				'laman' => 'Artikel',
-				'articles' => $this->db->select('*')->get('tbl_artikel')->result(),
-				'recommendation_article' => $this->db->select('*')->order_by('dilihat','ASC')->limit(3)->get('tbl_artikel')->result()
+				'laman' => $laman,
+				'posts' => $this->db->select('*')->where('jenis_post', $tipepost)->get('tbl_post')->result(),
+				'recommendation_post' => $this->db->select('*')->where('jenis_post', $tipepost)->order_by('dilihat','ASC')->limit(3)->get('tbl_post')->result()
 			);
 
-			$this->template->load('visitor/artikel/isi',$data);
+			$this->template->load('visitor/post/isi',$data);
 		} else {
 
-			$getarticle = $this->db->where('id', $id_artikel)->get('tbl_artikel')->row();
+			$getpost = $this->db->where('id', $id_post)->get('tbl_post')->row();
 
-			$viewssekarang = intval($getarticle->dilihat);
+			$viewssekarang = intval($getpost->dilihat);
 
 			$updateview = array(
 				'dilihat' => $viewssekarang + 1
 			);
 
-			$this->db->where('id',$getarticle->id)->update('tbl_artikel',$updateview);
+			$this->db->where('id',$getpost->id)->update('tbl_post',$updateview);
 
-			if ($getarticle) {
+			if ($getpost) {
 				$data = array(
-					'title_page' => 'Artikel - LSP P2 Pupuk Indonesia',
+					'title_page' => $laman.' - LSP P2 Pupuk Indonesia',
 					'classnyak' => $this,
-					'laman' => 'Artikel',
-					'isi_artikel' => $getarticle
+					'laman' => $laman,
+					'isi_post' => $getpost
 				);
 
-				$this->template->load('visitor/artikel/read_article',$data);
+				$this->template->load('visitor/post/read_post',$data);
 			} else {
 				$this->not_found();
 			}

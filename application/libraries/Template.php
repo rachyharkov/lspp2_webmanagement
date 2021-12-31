@@ -17,5 +17,11 @@ class Template{
         
         $this->_ci->load->view('visitor/template', $data);
     }
+
+    function load_adm_template($content, $data = NULL){
+        $data['contentnya'] = $this->_ci->load->view($content, $data, TRUE);
+        
+        $this->_ci->load->view('admin/template', $data);
+    }
 }
 ?>

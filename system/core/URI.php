@@ -325,7 +325,8 @@ class CI_URI {
 	 */
 	public function filter_uri(&$str)
 	{
-		if ( ! empty($str) && ! empty($this->_permitted_uri_chars) && ! preg_match('/^['.$this->_permitted_uri_chars.']+$/i'.(UTF8_ENABLED ? 'u' : ''), $str))
+		// if ( ! empty($str) && ! empty($this->_permitted_uri_chars) && ! preg_match('/^['.$this->_permitted_uri_chars.']+$/i'.(UTF8_ENABLED ? 'u' : ''), $str))
+		if ( ! preg_match("|^[".($this->config->item('permitted_uri_chars'))."]+$|i", rawurlencode($str)))
 		{
 			show_error('The URI you submitted has disallowed characters.', 400);
 		}
