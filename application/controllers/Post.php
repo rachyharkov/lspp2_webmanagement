@@ -218,7 +218,7 @@ class Post extends CI_Controller
 
             if($_FILES['foto_sampul']['name']){
 
-                unlink('./assets/images/blog-asset/'.$this->input->post('attachment_old', TRUE));
+                unlink('assets/images/blog-asset/'.$this->input->post('foto_sampul_old', TRUE));
 
                 $jenis_post = $this->input->post('jenis_post',TRUE);
 
@@ -252,13 +252,11 @@ class Post extends CI_Controller
             } else {
                 $data = array(
                     'judul_post' => $this->input->post('judul_post',TRUE),
-                    'jenis_post' => $this->input->post('jenis_post',TRUE),
+                    'jenis_post' => $jenis_post,
                     'tanggal_post' => $this->input->post('tanggal_post',TRUE),
                     'tag' => $this->input->post('tag',TRUE),
-                    'penulis_post' => $this->input->post('penulis_post',TRUE),
-                    'foto_sampul' => $this->input->post('foto_sampul',TRUE),
-                    'isi_post' => $this->input->post('isi_post',TRUE),
-                    'dilihat' => $this->input->post('dilihat',TRUE),
+                    'penulis_post' => $this->session->userdata('userid'),
+                    'isi_post' => $this->input->post('isi_post',TRUE)
                 );
 
                 $this->Post_model->update($this->input->post('id', TRUE), $data);

@@ -72,12 +72,12 @@
                     </div>
                     <div class="form-group">
                         <label for="tag">Tag <?php echo form_error('tag') ?></label>
-                        <input class="form-control" type="text" name="tag" id="tag" placeholder="Tag"><?php echo $tag; ?></input>
+                        <input class="form-control" type="text" name="tag" id="tag" placeholder="Tag" value="<?php echo $tag; ?>" />
                     </div>
 
                     <div class="form-group">
                         <div class="upload-btn-wrapper">
-                          <button class="btn btn-secondary">Upload Cover</button>
+                          <button class="btn btn-secondary"><?php echo $this->uri->segment(2) == 'update' ? 'Ganti Cover' : 'Upload Cover' ?></button>
                           <input type="file" name="myfile" />
                             <input type="file" name="foto_sampul" id="foto_sampul" placeholder="Foto Sampul" accept=".png,.jpeg,.jpg" onchange="preview(this)"/>
                         </div>
@@ -100,6 +100,9 @@
 
         $('#datetimepicker2').datetimepicker({
             locale: 'id',
+            widgetPositioning: {
+                vertical: 'bottom'
+            },
             icons: {
                 time: 'fas fa-clock',
                 date: 'fas fa-calendar',

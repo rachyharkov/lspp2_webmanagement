@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Charts</title>
+    <title>LSP P2 PI Web Management System</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo base_url() ?>assets/admin_asset/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -33,10 +33,10 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-desktop"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">LSP-P2PI SYS</div>
             </a>
 
             <!-- Divider -->
@@ -61,41 +61,17 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#colapseone"
                     aria-expanded="true" aria-controls="colapseone">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Pengumuman</span>
+                    <i class="fas fa-fw fa-bullhorn"></i>
+                    <span>Posts</span>
                 </a>
                 <div id="colapseone" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelola Pengumuman:</h6>
                         <a class="collapse-item" href="<?php echo base_url().'post?type=pengumuman&action=add' ?>">Tambah Pengumuman</a>
                         <a class="collapse-item" href="<?php echo base_url().'post?type=pengumuman' ?>">Daftar Pengumuman</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#colapsetwo"
-                    aria-expanded="true" aria-controls="colapsetwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Artikel</span>
-                </a>
-                <div id="colapsetwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelola Artikel:</h6>
                         <a class="collapse-item" href="<?php echo base_url().'post?type=artikel&action=add' ?>">Tambah Artikel</a>
                         <a class="collapse-item" href="<?php echo base_url().'post?type=artikel' ?>">Daftar Artikel</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#colapseberita"
-                    aria-expanded="true" aria-controls="colapseberita">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Berita</span>
-                </a>
-                <div id="colapseberita" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelola Berita:</h6>
                         <a class="collapse-item" href="<?php echo base_url().'post?type=berita&action=add' ?>">Tambah Berita</a>
                         <a class="collapse-item" href="<?php echo base_url().'post?type=berita' ?>">Daftar Berita</a>
@@ -104,12 +80,12 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsethree"
-                    aria-expanded="true" aria-controls="collapsethree">
-                    <i class="fas fa-fw fa-folder"></i>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#colapsetwo"
+                    aria-expanded="true" aria-controls="colapsetwo">
+                    <i class="fas fa-fw fa-image"></i>
                     <span>Galeri</span>
                 </a>
-                <div id="collapsethree" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="colapsetwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="login.html">Tambah Gambar</a>
                         <a class="collapse-item" href="register.html">Tambah Album</a>
