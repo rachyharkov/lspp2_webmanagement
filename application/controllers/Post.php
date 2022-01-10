@@ -276,7 +276,7 @@ class Post extends CI_Controller
         }
     }
     
-    public function delete($id) 
+    public function delete($id)
     {
         $row = $this->Post_model->get_by_id($id);
 
