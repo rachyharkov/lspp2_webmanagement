@@ -12,7 +12,7 @@ foreach ($posts as $v) {
 			</div>
 			<div class="col-sm-12 col-md-12 col-lg-6">
 				<h2><a style="text-decoration: none;" href="<?php echo base_url().'post/'.$v->id.'/'.strtolower(str_replace(' ', '-', $v->judul_post)) ?>"><?php echo $v->judul_post ?></a></h2>
-				<p style="font-size: 13px; color: gray;"><?php echo $v->penulis_post.' - '.longdate_indo(substr($v->tanggal_post, 0, 9)).' | '.substr($v->tanggal_post, 11, 18) ?></p>
+				<p style="font-size: 13px; color: gray;"><?php echo $classnyak->get_username($post->penulis_post)->username.' - '.longdate_indo(substr($v->tanggal_post, 0, 9)).' | '.substr($v->tanggal_post, 11, 18) ?></p>
 				<p class="text-justify"><?php echo $postisi ?></p>
 				<p style="color: #7b7b7b;font-size: 14px;"><span style="margin-right: 10px;"><i class="fas fa-comment fa-fw" style="margin-right: 5px;"></i>1</span> <span><i class="fas fa-eye fa-fw" style="margin-right: 5px;"></i><?php echo $v->dilihat ?></span></p>
 			</div>

@@ -1,11 +1,36 @@
-<script src="<?php echo base_url() ?>assets/plugins/ckeditor/ckeditor.js"></script>
+<style>
+    
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
 
-    <div class="container-fluid">
-        <h2 style="margin-top:0px">Tbl_post <?php echo $button ?></h2>
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js" integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="<?php echo base_url() ?>assets/plugins/ckeditor/ckeditor.js"></script>
+<img id="frame" src="<?php echo base_url().'assets/images/blog-asset/'.$foto_sampul ?>" style="position: absolute;
+    top: 65px;z-index: 1;object-fit: cover;<?php if($foto_sampul){echo 'display: block; width: 100%; height: 215px;';}else{echo 'display: none; width: 100%; height: 0px;';} ?>" />
+    <div class="container-fluid" style="position: relative;z-index: 1;">
         <form action="<?php echo $action; ?>" method="POST" enctype="multipart/form-data">
-	    <div class="form-group">
-            <label for="judul_post">Judul Post <?php echo form_error('judul_post') ?></label>
-            <input type="text" class="form-control" name="judul_post" id="judul_post" placeholder="Judul Post"><?php echo $judul_post; ?></input>
+	    <div class="form-group" style="margin-bottom: 5vh;
+                margin-top: 7vh;">
+            <?php echo form_error('judul_post') ?>
+            <input type="text" class="form-control" value="<?php echo $judul_post; ?>" name="judul_post" id="judul_post" placeholder="Judul Post" style="    background: #48484885;
+                border: none;
+                font-size: 3vw;
+                color: white;"/>
         </div>
         <div class="container" style="padding: 0;">
             <div class="row">
@@ -14,11 +39,11 @@
                         <label for="isi_post"><?php echo form_error('isi_post') ?></label>
                          <textarea class="form-control" style="height: 80vh;" name="isi_post" id="isi_post" placeholder="Isi Post"><?php echo $isi_post; ?>
                         </textarea>
-                    </div>    
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3">
                     <div class="form-group">
-                        <label for="int">Jenis Post <?php echo form_error('jenis_post') ?></label>
+                        <label for="jenis_post"><?php echo form_error('jenis_post') ?></label>
                         <select class="form-control" name="jenis_post" id="jenis_post" placeholder="Jenis Post">
                             <option>-</option>
                             <?php
@@ -38,7 +63,12 @@
                     </div>
                     <div class="form-group">
                         <label for="datetime">Tanggal Post <?php echo form_error('tanggal_post') ?></label>
-                        <input type="date" class="form-control" name="tanggal_post" id="tanggal_post" placeholder="Tanggal Post" value="<?php echo $tanggal_post; ?>" />
+                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                            <input type="text" name="tanggal_post" id="tanggal_post" placeholder="Tanggal Post" value="<?php echo $tanggal_post; ?>" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="tag">Tag <?php echo form_error('tag') ?></label>
@@ -46,9 +76,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="foto_sampul">Foto Sampul <?php echo form_error('foto_sampul') ?></label>
-                        <img id="frame" src="<?php echo base_url().'assets/images/blog-asset/'.$foto_sampul ?>" style="object-fit: cover; display: <?php echo $action == 'form_update_action' ? 'block':'none' ?>; width: 100%; height: 0px;" />
-                        <input type="file" class="form-control" name="foto_sampul" id="foto_sampul" placeholder="Foto Sampul" accept=".png,.jpeg,.jpg" onchange="preview(this)"><?php echo $foto_sampul; ?></input>
+                        <div class="upload-btn-wrapper">
+                          <button class="btn btn-secondary">Upload Cover</button>
+                          <input type="file" name="myfile" />
+                            <input type="file" name="foto_sampul" id="foto_sampul" placeholder="Foto Sampul" accept=".png,.jpeg,.jpg" onchange="preview(this)"/>
+                        </div>
+                        <input type="hidden" name="foto_sampul_old" id="foto_sampul_old" value="<?php echo $foto_sampul; ?>">
                     </div>
                 </div>
             </div>
@@ -60,6 +93,25 @@
     </div>
 
     <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('#tanggal_post').val('<?php echo $tanggal_post; ?>')
+        })
+
+        $('#datetimepicker2').datetimepicker({
+            locale: 'id',
+            icons: {
+                time: 'fas fa-clock',
+                date: 'fas fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-chevron-left',
+                next: 'fas fa-chevron-right',
+                today: 'fas fa-calendar-check-o',
+                clear: 'fas fa-trash',
+                close: 'fas fa-times'
+            }
+        });
 
         CKEDITOR.replace('isi_post', {
             height: '60vh',
@@ -78,14 +130,12 @@
             case 'jpg':
             case 'jpeg':
             case 'png':
-                $('#frame').css('height','200px')
-                $('#frame-pdf').css('height','0px')
+                $('#frame').css('height','215px')
                 frame.style.display = "block"
                 frame.src=URL.createObjectURL(event.target.files[0]);
                 break;
             default:
                 $('#frame').css('height','0px')
-                $('#frame-pdf').css('height','0px')
                 alert('Not allowed');
                 this.value = '';
             }

@@ -183,7 +183,7 @@ class Menu extends CI_Controller {
 
 			if ($getpost) {
 				$data = array(
-					'title_page' => $laman.' - LSP P2 Pupuk Indonesia',
+					'title_page' => $getpost->judul_post.' - LSP P2 Pupuk Indonesia',
 					'classnyak' => $this,
 					'laman' => $laman,
 					'isi_post' => $getpost
@@ -334,5 +334,9 @@ class Menu extends CI_Controller {
 
 		$this->template->load('error_404',$data);
 	}
-	
+
+	public function get_username($id)
+    {
+        return $this->db->where('user_id',$id)->get('tbl_user')->row();
+    }	
 }

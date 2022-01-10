@@ -4,7 +4,7 @@ const flasDataError = $('.flash-data2').data('flashdata2');
 
 if(flasData){
 	Swal.fire(
-	  'Terima Kasih',
+	  'Berhasil',
 	  flasData,
 	  'success'
 	)

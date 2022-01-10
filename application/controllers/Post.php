@@ -2,6 +2,7 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+date_default_timezone_set('Asia/Jakarta');
 
 class Post extends CI_Controller
 {
@@ -17,33 +18,57 @@ class Post extends CI_Controller
 
     public function index()
     {
-        $q = urldecode($this->input->get('q', TRUE));
-        $start = intval($this->input->get('start'));
-        
-        if ($q <> '') {
-            $config['base_url'] = base_url() . 'post/index.html?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'post/index.html?q=' . urlencode($q);
-        } else {
-            $config['base_url'] = base_url() . 'post/index.html';
-            $config['first_url'] = base_url() . 'post/index.html';
+        $action = $this->input->get('action', TRUE);
+
+        $typepost = $this->input->get('type', TRUE);
+        $typepostcode = 0; //artikel
+
+        if ($typepost == 'pengumuman') {
+            $typepostcode = 1;
         }
 
-        $config['per_page'] = 10;
-        $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Post_model->total_rows($q);
-        $post = $this->Post_model->get_limit_data($config['per_page'], $start, $q);
+        if ($typepost == 'berita') {
+            $typepostcode = 2;
+        }
 
-        $this->load->library('pagination');
-        $this->pagination->initialize($config);
+        if ($action == 'add') {
+            $this->create($typepostcode);
+        }
 
-        $data = array(
-            'post_data' => $post,
-            'q' => $q,
-            'pagination' => $this->pagination->create_links(),
-            'total_rows' => $config['total_rows'],
-            'start' => $start,
-        );
-        $this->template->load_adm_template('admin/post/tbl_post_list', $data);
+        if (!$action) {
+
+            $q = urldecode($this->input->get('q', TRUE));
+            $start = intval($this->input->get('start'));
+            
+            if ($q <> '') {
+                $config['base_url'] = base_url() . 'post/index.html?q=' . urlencode($q) . '&type='. $typepost;
+                $config['first_url'] = base_url() . 'post/index.html?q=' . urlencode($q) . '&type='. $typepost;
+            } else {
+                $config['base_url'] = base_url() . 'post/index.html';
+                $config['first_url'] = base_url() . 'post/index.html';
+            }
+
+            $config['per_page'] = 10;
+            $config['page_query_string'] = TRUE;
+            $config['total_rows'] = $this->Post_model->total_rows($q, $typepostcode);
+            $post = $this->Post_model->get_limit_data($config['per_page'], $start, $q, $typepostcode);
+
+            $this->load->library('pagination');
+            $this->pagination->initialize($config);
+
+            $data = array(
+                'post_data' => $post,
+                'typepost' => $typepost,
+                'title_head' => strtoupper($typepost),
+                'q' => $q,
+                'pagination' => $this->pagination->create_links(),
+                'total_rows' => $config['total_rows'],
+                'start' => $start,
+                'classnyak' => $this,
+
+            );
+            $this->template->load_adm_template('admin/post/tbl_post_list', $data);
+        }
     }
 
     public function read($id) 
@@ -51,16 +76,16 @@ class Post extends CI_Controller
         $row = $this->Post_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'id' => $row->id,
-		'judul_post' => $row->judul_post,
-		'jenis_post' => $row->jenis_post,
-		'tanggal_post' => $row->tanggal_post,
-		'tag' => $row->tag,
-		'penulis_post' => $row->penulis_post,
-		'foto_sampul' => $row->foto_sampul,
-		'isi_post' => $row->isi_post,
-		'dilihat' => $row->dilihat,
-	    );
+        		'id' => $row->id,
+        		'judul_post' => $row->judul_post,
+        		'jenis_post' => $row->jenis_post,
+        		'tanggal_post' => $row->tanggal_post,
+        		'tag' => $row->tag,
+        		'penulis_post' => $row->penulis_post,
+        		'foto_sampul' => $row->foto_sampul,
+        		'isi_post' => $row->isi_post,
+        		'dilihat' => $row->dilihat,
+    	    );
             $this->template->load_adm_template('admin/post/tbl_post_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -68,21 +93,32 @@ class Post extends CI_Controller
         }
     }
 
-    public function create() 
+    public function create($type) 
     {
+        $jp = 'Artikel'; //artikel
+
+        if ($type == 1) {
+            $jp = 'Pengumuman';
+        }
+
+        if ($type == 2) {
+            $jp = 'Berita';
+        }
+
         $data = array(
             'button' => 'Create',
             'action' => site_url('post/create_action'),
-	    'id' => set_value('id'),
-	    'judul_post' => set_value('judul_post'),
-	    'jenis_post' => set_value('jenis_post'),
-	    'tanggal_post' => set_value('tanggal_post'),
-	    'tag' => set_value('tag'),
-	    'penulis_post' => set_value('penulis_post'),
-	    'foto_sampul' => set_value('foto_sampul'),
-	    'isi_post' => set_value('isi_post'),
-	    'dilihat' => set_value('dilihat'),
-	);
+    	    'id' => set_value('id'),
+    	    'judul_post' => set_value('judul_post'),
+    	    'jenis_post' => set_value('jenis_post', $type),
+            'jp' => $jp,
+    	    'tanggal_post' => date("d/m/Y H:i"),
+    	    'tag' => set_value('tag'),
+    	    'penulis_post' => set_value('penulis_post'),
+    	    'foto_sampul' => set_value('foto_sampul'),
+    	    'isi_post' => set_value('isi_post'),
+    	    'dilihat' => set_value('dilihat'),
+    	);
         $this->template->load_adm_template('admin/post/tbl_post_form', $data);
     }
     
@@ -96,6 +132,9 @@ class Post extends CI_Controller
             $this->load->library('upload'); //call library upload 
 
             if($_FILES['foto_sampul']['name']){
+
+                $jenis_post = $this->input->post('jenis_post',TRUE);
+
                 $filenamee = 'sampul-'.date('ymdhms').'-'.substr(sha1(rand()),0,10);
 
                 $config['upload_path']          = './assets/images/blog-asset'; 
@@ -113,8 +152,8 @@ class Post extends CI_Controller
                 $uploadData = $this->upload->data();
                 $data = array(
                     'judul_post' => $this->input->post('judul_post',TRUE),
-                    'jenis_post' => $this->input->post('jenis_post',TRUE),
-                    'tanggal_post' => $this->input->post('tanggal_post',TRUE),
+                    'jenis_post' => $jenis_post,
+                    'tanggal_post' => date("Y-m-d H:i:s", strtotime($this->input->post('tanggal_post',TRUE))),
                     'tag' => $this->input->post('tag',TRUE),
                     'penulis_post' => $this->session->userdata('userid'),
                     'foto_sampul' => $uploadData['file_name'],
@@ -123,8 +162,19 @@ class Post extends CI_Controller
                 );
 
                 $this->Post_model->insert($data);
-                $this->session->set_flashdata('message', 'Create Record Success');
-                redirect(site_url('post'));
+                $this->session->set_flashdata('message', 'Tambah Post Berhasil');
+
+                $jp = 'artikel'; //artikel
+
+                if ($jenis_post == 1) {
+                    $jp = 'pengumuman';
+                }
+
+                if ($jenis_post == 2) {
+                    $jp = 'berita';
+                }
+
+                redirect(site_url('post?type='.$jp));
             } else {
                 echo 'no files for'.$_FILES['attachment']['name'].'???';
             }
@@ -139,16 +189,16 @@ class Post extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('post/update_action'),
-		'id' => set_value('id', $row->id),
-		'judul_post' => set_value('judul_post', $row->judul_post),
-		'jenis_post' => set_value('jenis_post', $row->jenis_post),
-		'tanggal_post' => set_value('tanggal_post', $row->tanggal_post),
-		'tag' => set_value('tag', $row->tag),
-		'penulis_post' => set_value('penulis_post', $row->penulis_post),
-		'foto_sampul' => set_value('foto_sampul', $row->foto_sampul),
-		'isi_post' => set_value('isi_post', $row->isi_post),
-		'dilihat' => set_value('dilihat', $row->dilihat),
-	    );
+        		'id' => set_value('id', $row->id),
+        		'judul_post' => set_value('judul_post', $row->judul_post),
+        		'jenis_post' => set_value('jenis_post', $row->jenis_post),
+        		'tanggal_post' => date("d/m/Y H:i", strtotime($row->tanggal_post)),
+        		'tag' => set_value('tag', $row->tag),
+        		'penulis_post' => set_value('penulis_post', $row->penulis_post),
+        		'foto_sampul' => set_value('foto_sampul', $row->foto_sampul),
+        		'isi_post' => set_value('isi_post', $row->isi_post),
+        		'dilihat' => set_value('dilihat', $row->dilihat),
+    	    );
             $this->template->load_adm_template('admin/post/tbl_post_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -163,20 +213,68 @@ class Post extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('id', TRUE));
         } else {
-            $data = array(
-		'judul_post' => $this->input->post('judul_post',TRUE),
-		'jenis_post' => $this->input->post('jenis_post',TRUE),
-		'tanggal_post' => $this->input->post('tanggal_post',TRUE),
-		'tag' => $this->input->post('tag',TRUE),
-		'penulis_post' => $this->input->post('penulis_post',TRUE),
-		'foto_sampul' => $this->input->post('foto_sampul',TRUE),
-		'isi_post' => $this->input->post('isi_post',TRUE),
-		'dilihat' => $this->input->post('dilihat',TRUE),
-	    );
+            $jenis_post = $this->input->post('jenis_post',TRUE);
+            $this->load->library('upload'); //call library upload 
 
-            $this->Post_model->update($this->input->post('id', TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('post'));
+            if($_FILES['foto_sampul']['name']){
+
+                unlink('./assets/images/blog-asset/'.$this->input->post('attachment_old', TRUE));
+
+                $jenis_post = $this->input->post('jenis_post',TRUE);
+
+                $filenamee = 'sampul-'.date('ymdhms').'-'.substr(sha1(rand()),0,10);
+
+                $config['upload_path']          = './assets/images/blog-asset'; 
+                $config['allowed_types']        = 'jpg|jpeg|png';
+                $config['max_size']             = 5000;
+                $config['file_name']            = $filenamee;
+
+                $_FILES['file']['name'] = $_FILES['foto_sampul']['name'];
+                $_FILES['file']['type'] = $_FILES['foto_sampul']['type'];
+                $_FILES['file']['tmp_name'] = $_FILES['foto_sampul']['tmp_name'];
+                $_FILES['file']['error'] = $_FILES['foto_sampul']['error'];
+                $_FILES['file']['size'] = $_FILES['foto_sampul']['size'];
+                $this->upload->initialize($config);
+                $this->upload->do_upload('file');
+                $uploadData = $this->upload->data();
+
+                $data = array(
+                    'judul_post' => $this->input->post('judul_post',TRUE),
+                    'jenis_post' => $jenis_post,
+                    'tanggal_post' => date("Y-m-d H:i:s", strtotime($this->input->post('tanggal_post',TRUE))),
+                    'tag' => $this->input->post('tag',TRUE),
+                    'penulis_post' => $this->session->userdata('userid'),
+                    'foto_sampul' => $uploadData['file_name'],
+                    'isi_post' => $this->input->post('isi_post',FALSE),
+                );
+
+                $this->Post_model->update($this->input->post('id', TRUE), $data);
+            } else {
+                $data = array(
+                    'judul_post' => $this->input->post('judul_post',TRUE),
+                    'jenis_post' => $this->input->post('jenis_post',TRUE),
+                    'tanggal_post' => $this->input->post('tanggal_post',TRUE),
+                    'tag' => $this->input->post('tag',TRUE),
+                    'penulis_post' => $this->input->post('penulis_post',TRUE),
+                    'foto_sampul' => $this->input->post('foto_sampul',TRUE),
+                    'isi_post' => $this->input->post('isi_post',TRUE),
+                    'dilihat' => $this->input->post('dilihat',TRUE),
+                );
+
+                $this->Post_model->update($this->input->post('id', TRUE), $data);
+            }
+            $jp = 'artikel'; //artikel
+
+            if ($jenis_post == 1) {
+                $jp = 'pengumuman';
+            }
+
+            if ($jenis_post == 2) {
+                $jp = 'berita';
+            }
+
+            $this->session->set_flashdata('message', 'Edit Post Berhasil');
+            redirect(site_url('post?type='.$jp));
         }
     }
     
@@ -185,12 +283,23 @@ class Post extends CI_Controller
         $row = $this->Post_model->get_by_id($id);
 
         if ($row) {
+
+            $jp = 'artikel'; //artikel
+
+            if ($row->jenis_post == 1) {
+                $jp = 'pengumuman';
+            }
+
+            if ($row->jenis_post == 2) {
+                $jp = 'berita';
+            }
+
             $this->Post_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('post'));
+            redirect(site_url('post?type='.$jp));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('post'));
+            redirect(site_url('post?type='.$jp));
         }
     }
 
@@ -281,6 +390,11 @@ class Post extends CI_Controller
 
             }
         }
+    }
+
+    public function get_username($id)
+    {
+        return $this->db->where('user_id',$id)->get('tbl_user')->row();
     }
 
 }

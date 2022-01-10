@@ -30,33 +30,19 @@ class Post_model extends CI_Model
     }
     
     // get total rows
-    function total_rows($q = NULL) {
-        $this->db->like('id', $q);
-	$this->db->or_like('judul_post', $q);
-	$this->db->or_like('jenis_post', $q);
-	$this->db->or_like('tanggal_post', $q);
-	$this->db->or_like('tag', $q);
-	$this->db->or_like('penulis_post', $q);
-	$this->db->or_like('foto_sampul', $q);
-	$this->db->or_like('isi_post', $q);
-	$this->db->or_like('dilihat', $q);
-	$this->db->from($this->table);
+    function total_rows($q = NULL, $jenis_post = NULL) {
+        $this->db->like('judul_post', $q);
+        $this->db->where('jenis_post', $jenis_post);
+        $this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL) {
+    function get_limit_data($limit, $start = 0, $q = NULL, $typepostcode = NULL) {
         $this->db->order_by($this->id, $this->order);
-        $this->db->like('id', $q);
-	$this->db->or_like('judul_post', $q);
-	$this->db->or_like('jenis_post', $q);
-	$this->db->or_like('tanggal_post', $q);
-	$this->db->or_like('tag', $q);
-	$this->db->or_like('penulis_post', $q);
-	$this->db->or_like('foto_sampul', $q);
-	$this->db->or_like('isi_post', $q);
-	$this->db->or_like('dilihat', $q);
-	$this->db->limit($limit, $start);
+    	$this->db->like('judul_post', $q);
+        $this->db->where('jenis_post', $typepostcode);
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

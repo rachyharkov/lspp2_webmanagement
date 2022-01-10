@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url() ?>assets/admin_asset/css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 
 </head>
 
@@ -66,8 +67,8 @@
                 <div id="colapseone" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelola Pengumuman:</h6>
-                        <a class="collapse-item" href="buttons.html">Tambah Pengumuman</a>
-                        <a class="collapse-item" href="cards.html">Daftar Pengumuman</a>
+                        <a class="collapse-item" href="<?php echo base_url().'post?type=pengumuman&action=add' ?>">Tambah Pengumuman</a>
+                        <a class="collapse-item" href="<?php echo base_url().'post?type=pengumuman' ?>">Daftar Pengumuman</a>
                     </div>
                 </div>
             </li>
@@ -81,8 +82,23 @@
                 <div id="colapsetwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelola Artikel:</h6>
-                        <a class="collapse-item" href="buttons.html">Tambah Artikel</a>
-                        <a class="collapse-item" href="cards.html">Daftar Artikel</a>
+                        <a class="collapse-item" href="<?php echo base_url().'post?type=artikel&action=add' ?>">Tambah Artikel</a>
+                        <a class="collapse-item" href="<?php echo base_url().'post?type=artikel' ?>">Daftar Artikel</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#colapseberita"
+                    aria-expanded="true" aria-controls="colapseberita">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Berita</span>
+                </a>
+                <div id="colapseberita" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Kelola Berita:</h6>
+                        <a class="collapse-item" href="<?php echo base_url().'post?type=berita&action=add' ?>">Tambah Berita</a>
+                        <a class="collapse-item" href="<?php echo base_url().'post?type=berita' ?>">Daftar Berita</a>
                     </div>
                 </div>
             </li>
@@ -218,10 +234,10 @@
         <div id="content-wrapper" class="d-flex flex-column">
 
             <!-- Main Content -->
-            <div id="content">
+            <div id="content" style="position: relative;">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" style="z-index: 3;">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -489,6 +505,8 @@
     <script src="<?php echo base_url() ?>assets/admin_asset/js/demo/chart-area-demo.js"></script>
     <script src="<?php echo base_url() ?>assets/admin_asset/js/demo/chart-pie-demo.js"></script>
     <script src="<?php echo base_url() ?>assets/admin_asset/js/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="<?php echo base_url() ?>assets/js/dataflash.js"></script>
 
 </body>
 

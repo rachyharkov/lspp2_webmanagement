@@ -46,10 +46,10 @@ text-align: center;">LSPP2 PI Web Management System</p>
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Selamat Datang</h1>
                                     </div>
-                                    <div class="flash-data2" data-flashdata2="<? echo $this->session->flashdata('message'); ?>">
+                                    <div class="flash-data2" data-flashdata2="<?= $this->session->flashdata('message'); ?>">
                                     	
                                     </div>
-                                    <form class="user" action="<? echo site_url('auth/process')?>" method="post">
+                                    <form class="user" action="<?php echo site_url('auth/process')?>" method="post">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
                                                 id="username" name="username" aria-describedby="usernameHelp"
