@@ -80,18 +80,9 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#colapsetwo"
-                    aria-expanded="true" aria-controls="colapsetwo">
+                <a class="nav-link" href="<?php echo base_url().'gallery' ?>">
                     <i class="fas fa-fw fa-image"></i>
-                    <span>Galeri</span>
-                </a>
-                <div id="colapsetwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="login.html">Tambah Gambar</a>
-                        <a class="collapse-item" href="register.html">Tambah Album</a>
-                        <a class="collapse-item" href="forgot-password.html">Daftar Album</a>
-                    </div>
-                </div>
+                    <span>Galeri</span></a>
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
