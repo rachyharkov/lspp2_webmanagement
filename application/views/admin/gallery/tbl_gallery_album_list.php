@@ -467,7 +467,7 @@ $(document).ready(function() {
     $(document).on('click','.show_picture', function() {
         $('#exampleModal').modal('toggle')
 
-        const picture_id = $(this).
+        const picture_id = $(this).attr('id')
 
         $.ajax({
             type: "GET",
@@ -478,7 +478,7 @@ $(document).ready(function() {
 
                 $('.modal-body').html(`
                     <div>
-                        <img src="<?php echo base_url().'assets/images/gallery/' ?>"${dt.nama_gambar}>
+                        <img src="<?php echo base_url().'assets/images/gallery/${dt.nama_gambar}' ?>" style="width: 100%;">
                     </div>
                     `)
             },
@@ -492,7 +492,7 @@ $(document).ready(function() {
         });
     })    
 
-    $(document).click(function() {
+    $(document).on('click',function() {
         // alert('clicked outside');
         $('.option-menu-ul').removeClass('active')
     });
@@ -557,6 +557,47 @@ $(document).ready(function() {
                 }
             }) 
           }
+        })
+    })
+
+    $(document).on('click','.delete-picture-href', function() {
+
+        var picture_id = $(this).attr('id')
+
+        Swal.fire({
+          title: 'Yakin ingin menghapus gambar ini?',
+          text: "Tindakan ini tidak dapat dibatalkan kembali jika diinisiasikan",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, hapus'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url() ?>Gallery/delete_picture/",
+                    data:{
+                        picture_id: picture_id
+                    }, //penggunaan FormData
+                    success: function(data){
+
+                        Toast.fire({
+                          icon: 'success',
+                          title: 'Gambar berhasil dihapus'
+                        })
+
+                        $('.level-current').html(data);
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                          icon: 'error',
+                          title: "Oops!",
+                          text: 'Tidak dapat tersambung dengan server, pastikan koneksi anda aktif, jika masih terjadi hubungi admin IT'
+                        })
+                    }
+                })
+            }
         })
     })
 

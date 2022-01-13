@@ -81,6 +81,13 @@ class Gallery_album_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+    // delete data
+    function delete_picture($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('tbl_gallery');
+    }
+
 }
 
 /* End of file Gallery_album_model.php */

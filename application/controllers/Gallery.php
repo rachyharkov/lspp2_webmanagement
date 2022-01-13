@@ -179,11 +179,11 @@ top: 3px;"><i class="fas fa-ellipsis-v"></i></button>
                     <h3 style="font-size: 12px;">'.$ng.'</h3>
                 </div>
                 <button class="btn btn-option" style="position: absolute;
-    right: 17px;
-    top: 3px;"><i class="fas fa-ellipsis-v"></i></button>
+                right: 17px;
+                top: 3px;"><i class="fas fa-ellipsis-v"></i></button>
                 <ul class="option-menu-ul">
-                    <li style="list-style: none;"><a href="#" class="edit-href" id="'.$value->id.'" data-filename="'.$value->gambar.'" data-captiongambar="'.$value->caption_gambar.'" style="text-decoration: none; color: black;">Edit</a></li>
-                    <li style="list-style: none;"><a href="#" id="'.$value->id.'" class="delete-href" style="text-decoration: none; color: red;">Delete</a></li>
+                    <li style="list-style: none;"><a href="#" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: black;">Preview on web</a></li>
+                    <li style="list-style: none;"><a href="#" id="'.$value->id.'" class="delete-picture-href" style="text-decoration: none; color: red;">Delete</a></li>
                 </ul>
             </div>';
         }
@@ -229,6 +229,24 @@ top: 3px;"><i class="fas fa-ellipsis-v"></i></button>
 
             $this->get_all_picture_by_album_id($album_id);
         }
+    }
+
+    public function delete_picture()
+    {
+
+        $id = $this->input->post('picture_id');
+
+        $datagmbar = $this->db->where('id', $id)->get('tbl_gallery')->row();
+
+        $album_id = $datagmbar->album_id;
+
+        $judul_gambar = $datagmbar->gambar;
+
+        unlink('assets/images/gallery/'.$judul_gambar);
+
+        $this->Gallery_album_model->delete_picture($id);
+
+        $this->get_all_picture_by_album_id($album_id);
     }
 }
 
