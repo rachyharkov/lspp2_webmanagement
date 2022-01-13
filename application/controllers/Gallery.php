@@ -157,9 +157,14 @@ top: 3px;"><i class="fas fa-ellipsis-v"></i></button>
 
         $list_gambarnya = '
         <div style="position: relative; width: calc(25% - 17px);">
-            <div class="tile" id="'.$album_id.'">
+            <div class="tile" id="'.$album_id.'" style="overflow: hidden;">
                 <i class="fas fa-upload"></i>
                 <h3 style="font-size: 12px;">Upload</h3>
+                <input type="file" name="gambarny" id="'.$album_id.'" class="preview_bfr_upload" style="font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;"/>
             </div>
         </div>';
 
@@ -197,6 +202,33 @@ top: 3px;"><i class="fas fa-ellipsis-v"></i></button>
         );
 
         echo json_encode($arr, true);
+    }
+
+    public function upload_picture()
+    {
+        $album_id = $this->input->post('id_album');
+        $judul_gambar = $this->input->post('judul_gambar');
+        $caption_gambar = $this->input->post('caption_gambar');
+
+        $config['upload_path']="./assets/images/gallery";
+        $config['allowed_types']='gif|jpg|png|jpeg';
+        $config['encrypt_name'] = TRUE;
+         
+        $this->load->library('upload',$config);
+        if($this->upload->do_upload("gambarny")){
+            $data = array('upload_data' => $this->upload->data());
+
+            $imagedata = array(
+                'album_id' => $album_id,
+                'gambar' => $data['upload_data']['file_name'],
+                'judul_gambar' => $judul_gambar,
+                'caption_gambar' => $caption_gambar
+            ); 
+             
+            $result= $this->Gallery_album_model->insert_gambar($imagedata);
+
+            $this->get_all_picture_by_album_id($album_id);
+        }
     }
 }
 

@@ -218,6 +218,35 @@
   </div>
 </div>
 
+<div class="modal fade" id="formImageUpload" tabindex="-1" role="dialog" aria-labelledby="formImageUploadLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <form id="form_image_add">
+          <div class="modal-header">
+            <h5 class="modal-title" id="formImageUploadLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <img id="frame_preview_image" src="" />
+            <div class="form-group" style="margin-top: 2vh;">
+                <input type="text" name="judul_gambar" class="form-control" placeholder="Judul Gambar">
+            </div>
+            <div class="form-group">
+                <textarea name="caption_gambar" class="form-control" rows="3" placeholder="Masukan Caption"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" id="album_id_toupload" name="id_album" value="">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+
     <script>
 $(document).ready(function() {
   // Folder on click
@@ -351,6 +380,86 @@ $(document).ready(function() {
                   text: 'Tidak dapat tersambung dengan server, pastikan koneksi anda aktif, jika masih terjadi hubungi admin IT'
                 })
                 btnselected.html('Simpan').removeClass('disabled').removeAttr('disabled')
+            }
+        }) 
+    })
+
+
+    $(document).on('change','.preview_bfr_upload', function() {
+
+        var thiselin = $(this)
+
+        var album_id = $(this).attr('id')
+
+        if(thiselin.get(0).files[0].size > 2097152){
+           thiselin.get(0).value = ""
+           $('#frame_preview_image').get(0).style.display = "none"
+           alert("Maksimal lampiran 2 MB")
+        } else {
+
+            var ext = thiselin.get(0).value.match(/\.([^\.]+)$/)[1];
+            switch (ext) {
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                    alert('sip, INITIALIZING...')
+                    $('#frame_preview_image').css('width','100%')
+                    $('#frame_preview_image').get(0).style.display = "block"
+                    $('#frame_preview_image').get(0).src=URL.createObjectURL(event.target.files[0]);
+                    $('#formImageUpload').find('form').attr('id','form_image_add')
+                    $('#formImageUpload').modal('toggle')
+                    $('#album_id_toupload').val(album_id)
+                    break;
+                default:
+                    $('#frame_preview_image').css('width','0px')
+                    alert('Not allowed');
+                    thiselin.get(0).value = '';
+            }
+        }
+    })
+
+    $(document).on('submit', '#form_image_add', function(e) {
+        e.preventDefault()
+
+        if ($(this).valid) return false;
+
+        var a = this
+
+        var formData = new FormData(a);
+
+        formData.append("gambarny", $('.preview_bfr_upload').get(0).files[0])
+
+        var btnselected = $(document.activeElement)
+
+        btnselected.html('<i class="fas fa-sync fa-spin"></i>').addClass('disabled').attr('disabled')
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>Gallery/upload_picture",
+            data: formData,
+            processData:false,
+            contentType:false,
+            cache:false,
+            async:false,
+            success: function(data){
+                $('#formImageUpload').modal('toggle')
+               
+                Toast.fire({
+                  icon: 'success',
+                  title: 'Gambar berhasil ditambahkan'
+                })
+
+                btnselected.html('Upload').removeClass('disabled').removeAttr('disabled')
+
+                $('.level-current').html(data);
+            },
+            error: function(error) {
+                Swal.fire({
+                  icon: 'error',
+                  title: "Oops!",
+                  text: 'Tidak dapat tersambung dengan server, pastikan koneksi anda aktif, jika masih terjadi hubungi admin IT'
+                })
+                btnselected.html('Upload').removeClass('disabled').removeAttr('disabled')
             }
         }) 
     })

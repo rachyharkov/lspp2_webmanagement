@@ -62,6 +62,11 @@ class Gallery_album_model extends CI_Model
         $this->db->insert($this->table, $data);
     }
 
+    function insert_gambar($data)
+    {
+        $this->db->insert('tbl_gallery', $data);
+    }
+
     // update data
     function update($id, $data)
     {
