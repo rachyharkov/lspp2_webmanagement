@@ -122,26 +122,26 @@
         });
 
         function preview(s) {
-        if(s.files[0].size > 2097152){
-           s.value = ""
-           frame.style.display = "none"
-           alert("Maksimal lampiran 2 MB")
-        } else {
+            if(s.files[0].size > 2097152){
+               s.value = ""
+               frame.style.display = "none"
+               alert("Maksimal lampiran 2 MB")
+            } else {
 
-            var ext = s.value.match(/\.([^\.]+)$/)[1];
-            switch (ext) {
-            case 'jpg':
-            case 'jpeg':
-            case 'png':
-                $('#frame').css('height','215px')
-                frame.style.display = "block"
-                frame.src=URL.createObjectURL(event.target.files[0]);
-                break;
-            default:
-                $('#frame').css('height','0px')
-                alert('Not allowed');
-                this.value = '';
+                var ext = s.value.match(/\.([^\.]+)$/)[1];
+                switch (ext) {
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                    $('#frame').css('height','215px')
+                    frame.style.display = "block"
+                    frame.src=URL.createObjectURL(event.target.files[0]);
+                    break;
+                default:
+                    $('#frame').css('height','0px')
+                    alert('Not allowed');
+                    this.value = '';
+                }
             }
         }
-    }
     </script>

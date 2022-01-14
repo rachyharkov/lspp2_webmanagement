@@ -109,7 +109,9 @@ margin: auto;">
 			foreach ($list_sertifikasi as $value) {
 				?>
 					<div class="sertifikasi-item animate-element" style="--char-index: <?php echo $x ?>">
-						<img class="lazyload" data-src="<?php echo base_url().'assets/images/skema_ic/'.$value->kode_sertifikasi.'.png' ?>" alt="" style="object-fit: contain;width: 100%;">	
+						<img class="lazyload" data-src="<?php echo base_url().'assets/images/skema_ic/'.$value->logo ?>" alt="<?php $value->nama_sertifikasi ?>" style="object-fit: cover;
+    width: 100%;
+    height: 100%;">	
 						<div class="sertifikasi-title">
 							<p><a href="<?php echo base_url().'skema_sertifikasi/'.$value->id ?>" style="color: white;"><?php echo $value->nama_sertifikasi ?></a></p>
 						</div>
